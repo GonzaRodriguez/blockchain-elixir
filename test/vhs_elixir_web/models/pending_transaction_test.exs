@@ -31,4 +31,16 @@ defmodule VhsElixirWeb.PendingTransactionTest do
       assert Repo.get_by(PendingTransaction, tx_id: valid_tx_id)
     end
   end
+
+  describe "remove_pending_transaction/1" do
+    test "removes transaction by tx_id" do
+      tx_id = "fake_tx_id"
+
+      %PendingTransaction{}
+      |> PendingTransaction.changeset(%{tx_id: tx_id, blockchain_type: "Etherium"})
+      |> Repo.insert!()
+
+      assert PendingTransaction.remove_pending_transaction(tx_id) == {1, nil}
+    end
+  end
 end
