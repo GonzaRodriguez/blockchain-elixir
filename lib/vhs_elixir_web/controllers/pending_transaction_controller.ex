@@ -27,10 +27,16 @@ defmodule VhsElixirWeb.PendingTransactionController do
   def index(conn, _) do
     Logger.info("Fetching all pending transactions")
 
-    status = "Success"
+    case PendingTransaction.all_pending_transactions() do
+      {:ok, pending_tx_ids} ->
+        conn
+        |> put_status(:ok)
+        |> json(%{pending_tx_ids: pending_tx_ids})
 
-    conn
-    |> put_status(:ok)
-    |> json(%{status: status})
+      {:error, error} ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{error: error})
+    end
   end
 end
