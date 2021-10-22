@@ -2,6 +2,7 @@ defmodule VhsElixirWeb.PendingTransaction do
   use Ecto.Schema
 
   import Ecto.Changeset
+  import Ecto.Query
 
   alias __MODULE__
   alias Vhs.Clients.Blocknative
@@ -54,5 +55,14 @@ defmodule VhsElixirWeb.PendingTransaction do
       end)
 
     {:ok, failed_tx_ids}
+  end
+
+  @doc """
+  Removes the transaction from database when the system receive an update of this transaction from Blocknative
+  """
+  @spec remove_pending_transaction(String.t()) :: {integer(), nil | [term()]}
+  def remove_pending_transaction(tx_id) do
+    # Remove pending transaction by tx_id
+    from(t in PendingTransaction, where: t.tx_id == ^tx_id) |> Repo.delete_all()
   end
 end
