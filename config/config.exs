@@ -8,7 +8,21 @@
 import Config
 
 config :vhs_elixir,
-  ecto_repos: [VhsElixir.Repo]
+  ecto_repos: [VhsElixir.Repo],
+  blocknative: %{
+    base_url: "https://api.blocknative.com/",
+    transaction_path: "transaction",
+    payload: %{
+      apiKey: nil,
+      blockchain: "ethereum",
+      network: "main"
+    }
+  },
+  slack: %{
+    base_url: "https://hooks.slack.com/services/",
+    slack_webhook: nil
+  },
+  username: nil
 
 # Configures the endpoint
 config :vhs_elixir, VhsElixirWeb.Endpoint,
