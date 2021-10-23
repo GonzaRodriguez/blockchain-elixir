@@ -20,8 +20,8 @@ config :vhs_elixir, VhsElixirWeb.Endpoint,
   secret_key_base: "/AS6eP6G3noCtMxu242TtmR5ii5PU31QJJGTbb0FsgTph1W4nOiXYSL75tx1tDcd",
   server: false
 
-# Print only warnings and errors during test
-config :logger, level: :warn
+# Disable logger in tests
+config :logger, backends: []
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
