@@ -42,6 +42,19 @@ Fetch all pending transaction from the system.
 ## Running tests
 You simple have to run `mix test` and all the suite should run.
 
+## Running in container:
+
+Update config/dev.exs by changing the :vhs_elixir/hostname from "localhost" (running without container) to "db" (running in container).
+
+In one terminal tab:
+* `docker-compose build`
+* `docker-compose up`
+
+In a second tab, once the two commands in the first tab are completed:
+* `docker-compose exec web mix ecto.setup`
+
+If everything spins up with no errors, site will be live at localhost:4000
+
 ## To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
