@@ -29,6 +29,11 @@ defmodule Vhs.Clients.Slack do
 
   defp build_payload(tx_id, "ok"), do: build_message("*#{tx_id} got mined*", tx_id, "Ok")
 
+  defp build_payload(tx_id, "pending"),
+    do: build_message("*#{tx_id} still pending*", tx_id, "Pending")
+
+  defp build_payload(_tx_id, _), do: "Status not supported yet"
+
   defp build_message(custom_text, tx_id, status) do
     %{
       text: custom_text,

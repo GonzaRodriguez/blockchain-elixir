@@ -11,5 +11,13 @@ defmodule VhsElixirWeb.SlackTest do
 
       assert status == "ok"
     end
+
+    test "sends message when the status is pending" do
+      params = %{"hash" => "fake_tx_id", "status" => "pending"}
+
+      {:ok, status} = Slack.webhook_post(params)
+
+      assert status == "ok"
+    end
   end
 end

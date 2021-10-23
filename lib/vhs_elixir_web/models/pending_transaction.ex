@@ -4,8 +4,11 @@ defmodule VhsElixirWeb.PendingTransaction do
   import Ecto.Changeset
   import Ecto.Query
 
+  require Logger
+
   alias __MODULE__
   alias Vhs.Clients.Blocknative
+  alias Vhs.Clients.Slack
   alias VhsElixir.Repo
 
   @type t :: %__MODULE__{
@@ -46,6 +49,20 @@ defmodule VhsElixirWeb.PendingTransaction do
           {:ok, _response} ->
             # Store the transaction in the system
             Repo.insert(changeset(%PendingTransaction{}, %{tx_id: tx_id, blockchain_type: "ETH"}))
+
+            # Spawn a new process to wait 2 minutes for the blocknative response
+            Process.spawn(
+              fn ->
+                Process.sleep(120_000)
+
+                unless is_nil(Repo.get_by(PendingTransaction, tx_id: tx_id)) do
+                  Slack.webhook_post(%{"hash" => tx_id, "status" => "pending"})
+                end
+
+                Logger.info("Process finished")
+              end,
+              []
+            )
 
             acc
 
