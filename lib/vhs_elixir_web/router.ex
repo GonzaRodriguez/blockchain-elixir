@@ -7,5 +7,7 @@ defmodule VhsElixirWeb.Router do
 
   scope "/api", VhsElixirWeb do
     pipe_through :api
+
+    resources "/pending_transactions", PendingTransactionController, only: [:index, :create]
   end
 end
