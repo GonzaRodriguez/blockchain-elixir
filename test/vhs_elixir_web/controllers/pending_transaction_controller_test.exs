@@ -40,10 +40,24 @@ defmodule VhsElixirWeb.PendingTransactionControllerTest do
   end
 
   describe "index/2" do
-    test "with valid data", %{conn: conn} do
+    test "returns no tx_id when the system has not pending transactions", %{conn: conn} do
       response = get(conn, Routes.pending_transaction_path(conn, :index), %{})
 
-      assert json_response(response, 200) == %{"status" => "Success"}
+      assert json_response(response, 200) == %{"pending_tx_ids" => []}
+    end
+
+    test "returns the tx_ids when the system has pending transactions", %{conn: conn} do
+      tx_ids_to_watch = ["fake_tx_id", "fake_tx_id_1", "fake_tx_id_2"]
+
+      Enum.each(tx_ids_to_watch, fn tx_id ->
+        %PendingTransaction{}
+        |> PendingTransaction.changeset(%{tx_id: tx_id, blockchain_type: "Etherium"})
+        |> Repo.insert!()
+      end)
+
+      response = get(conn, Routes.pending_transaction_path(conn, :index), %{})
+
+      assert json_response(response, 200) == %{"pending_tx_ids" => tx_ids_to_watch}
     end
   end
 end
