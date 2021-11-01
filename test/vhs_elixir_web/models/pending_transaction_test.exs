@@ -43,4 +43,23 @@ defmodule VhsElixirWeb.PendingTransactionTest do
       assert PendingTransaction.remove_pending_transaction(tx_id) == {1, nil}
     end
   end
+
+  describe "all_pending_transactions/0" do
+    test "fetchs all pending transactions" do
+      tx_ids_to_watch = ["fake_tx_id", "fake_tx_id_1", "fake_tx_id_2"]
+
+      Enum.each(tx_ids_to_watch, fn tx_id ->
+        %PendingTransaction{}
+        |> PendingTransaction.changeset(%{tx_id: tx_id, blockchain_type: "Etherium"})
+        |> Repo.insert!()
+      end)
+
+      {:ok, tx_ids} = PendingTransaction.all_pending_transactions()
+
+      random_tx_id = Enum.random(tx_ids_to_watch)
+
+      assert length(tx_ids) == 3
+      assert Enum.member?(tx_ids_to_watch, random_tx_id)
+    end
+  end
 end

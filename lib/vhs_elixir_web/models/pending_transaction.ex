@@ -65,4 +65,12 @@ defmodule VhsElixirWeb.PendingTransaction do
     # Remove pending transaction by tx_id
     from(t in PendingTransaction, where: t.tx_id == ^tx_id) |> Repo.delete_all()
   end
+
+  @spec all_pending_transactions() :: {:ok, [Ecto.Schema.t()]} | Ecto.QueryError.t()
+  def all_pending_transactions do
+    # Fetch all pending transactions tx_id
+    tx_ids = from(t in PendingTransaction, select: t.tx_id) |> Repo.all()
+
+    {:ok, tx_ids}
+  end
 end
