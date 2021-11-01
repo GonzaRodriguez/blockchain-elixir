@@ -1,0 +1,11 @@
+# suggested files and folders gathered from distillery hexdocs
+# https://hexdocs.pm/distillery/guides/working_with_docker.html
+
+_build/
+deps/
+.git/
+.gitignore
+Dockerfile
+README*
+test/
+priv/static/
