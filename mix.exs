@@ -10,7 +10,12 @@ defmodule VhsElixir.MixProject do
       compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      docs: [
+        main: "VHS-Elixir",
+        logo: "assets/vhs-logo.png",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -41,7 +46,8 @@ defmodule VhsElixir.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:ex_doc, "~> 0.24", only: :dev, runtime: false}
     ]
   end
 
