@@ -9,18 +9,28 @@ defmodule VhsElixirWeb.PendingTransactionController do
   def create(conn, %{"transaction_ids" => tx_ids}) do
     Logger.info("New transaction ids to watch: #{tx_ids}")
 
-    status =
-      case PendingTransaction.new_transaction_to_watch(tx_ids) do
-        {:ok, failed_tx_ids} when failed_tx_ids != [] ->
-          "Transactions with ids = '#{failed_tx_ids}' were not added to watch"
+    try do
+      status =
+        case PendingTransaction.new_transaction_to_watch(tx_ids) do
+          {:ok, failed_tx_ids} when failed_tx_ids != [] ->
+            "Transactions with ids = '#{failed_tx_ids}' were not added to watch"
 
-        _ ->
-          "Success"
-      end
+          {:error, error} ->
+            error
 
-    conn
-    |> put_status(:created)
-    |> json(%{status: status})
+          _ ->
+            "Success"
+        end
+
+      conn
+      |> put_status(:created)
+      |> json(%{status: status})
+    rescue
+      e in RuntimeError ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> json(%{error: e.message})
+    end
   end
 
   @spec index(Plug.Conn.t(), request_params :: map()) :: map()
