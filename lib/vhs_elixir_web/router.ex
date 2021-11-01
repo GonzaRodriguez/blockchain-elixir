@@ -10,4 +10,6 @@ defmodule VhsElixirWeb.Router do
 
     resources "/pending_transactions", PendingTransactionController, only: [:index, :create]
   end
+
+  post "/blocknative/confirm", VhsElixirWeb.WebhookController, :transaction_update
 end
