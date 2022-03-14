@@ -1,6 +1,6 @@
-# VhsElixir
+# Blochain Challenge Elixir
 
-This project implements the backend challenge provided by VHS using Elixir language.
+This project implements a blockchain challenge using Elixir language.
 
 In order to make this project works you should follow the steps listed below:
 
