@@ -1,4 +1,4 @@
-# Blochain Challenge Elixir
+# Blockchain Challenge Elixir
 
 This project implements a blockchain challenge using Elixir language.
 
